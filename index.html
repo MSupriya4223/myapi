@@ -101,6 +101,11 @@
     </style>
 </head>
 <body>
+    <div class="form-group">
+        <input type="text" id="apiUrlInput" placeholder="Enter API URL..." style="margin-bottom:10px;">
+        <button onclick="setApiUrl()">Set API</button>
+    </div>
+
     <div class="container">
         <h1>Task Manager</h1>
         
@@ -119,19 +124,33 @@
     </div>
 
     <script>
-        const API_BASE = 'https://e724719fda3a.ngrok-free.app';
-        
-        function showStatus(message, type = 'success') {
-            const statusDiv = document.getElementById('statusMessage');
-            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
-            setTimeout(() => statusDiv.innerHTML = '', 3000);
-        }
-        
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                addTask();
+
+        let API_BASE = '';
+
+        function setApiUrl() {
+            const input = document.getElementById('apiUrlInput').value.trim();
+            if (input) {
+                API_BASE = input.endsWith('/api') ? input : input + '/api';
+                showStatus(`API URL set to: ${API_BASE}`);
+                loadTasks();
+            } else {
+                showStatus('Please enter a valid API URL', 'error');
             }
         }
+
+        // const API_BASE = 'https://e724719fda3a.ngrok-free.app';
+        
+        // function showStatus(message, type = 'success') {
+        //     const statusDiv = document.getElementById('statusMessage');
+        //     statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        //     setTimeout(() => statusDiv.innerHTML = '', 3000);
+        // }
+        
+        // function handleKeyPress(event) {
+        //     if (event.key === 'Enter') {
+        //         addTask();
+        //     }
+        // }
         
         async function addTask() {
             const input = document.getElementById('taskInput');
